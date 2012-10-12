@@ -5,8 +5,8 @@ specifics will be changed to fit with each language's coding standards
 (eg set_log in Python is setLog in Java, or ctx_set_log in PHP)
 
 
-set_log(url)
-------------
+set_log(url, append)
+--------------------
 Tell context to start logging events to the given target
 
 If filename is null / None / 0 / etc, stop logging to file
@@ -15,6 +15,8 @@ Implemented by:
 - file:// - all APIs
 - tcp://  - none yet
 - udp://  - none yet
+
+append defaults to true
 
 
 set_profile(enabled)
