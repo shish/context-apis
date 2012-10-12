@@ -1,0 +1,7 @@
+*.pyc
+*.egg-info
+*.ctxt
+*.cbin
+*.class
+*.o
+*.so
