@@ -15,5 +15,8 @@ setup(
     namespace_packages=["context"],
     test_suite = "context.tests.api",
     zip_safe=True,
+    install_requires=[
+        "decorator",
+    ],
 )
 

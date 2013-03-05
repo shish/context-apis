@@ -12,6 +12,7 @@ Tell context to start logging events to the given target
 If filename is null / None / 0 / etc, stop logging to file
 
 Implemented by:
+
 - file:// - all APIs
 - tcp://  - none yet
 - udp://  - none yet
@@ -26,6 +27,7 @@ Hook into the language runtime to automatically log when every function starts a
 enabled = boolean, true to start profiling, false to stop
 
 Implemented by:
+
 - Python
 
 
@@ -38,6 +40,7 @@ text     = freeform text description of what's happening
 marker   = BMARK, START, ENDOK, ENDER, CLEAR
 
 Implemented by:
+
 - ?
 
 
@@ -80,4 +83,5 @@ If a callback is specified, it will be passed the function name and
 paramaters, and it should return some text
 
 Implemented by:
+
 - Python
