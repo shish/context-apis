@@ -45,7 +45,7 @@ Implemented by:
 
 
 log_start(text)
----------------
+===============
 Log that an event has started
 
 Some APIs add optional extra paramaters for "clear stack" and "set bookmark", so you can do all three things in one call
@@ -54,22 +54,22 @@ Shortcut to log_msg(getCurrentFunction(), text, "START")
 
 
 log_endok(text)
----------------
+===============
 Log that an event has finished successfully
 
 
 log_ender(text)
----------------
+===============
 Log that an event has finished with an error
 
 
 log_bmark(text)
----------------
+===============
 Add a bookmark to the log
 
 
 log_clear(text)
----------------
+===============
 Clear the stack (it's possible that an app crash could cause a START event to
 be logged with no matching ENDOK; CLEAR will turn any currently unfinished
 events into ENDER)
