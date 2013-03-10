@@ -131,7 +131,7 @@ def _profile(frame, action, params):
 
 def set_profile(active=False):
     if active:
-        log_start("Profiling init", True)
+        log_start("Profiling init", bookmark=True)
         sys.setprofile(_profile)
     else:
         sys.setprofile(None)
