@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import context.api as c
+import time
 
 c.set_log("file://output.py-profile.ctxt")
 c.set_profile(True)
@@ -13,11 +14,12 @@ class BailOut(Exception):
 def validate(queens):
     left = right = col = queens[-1]
     for r in reversed(queens[:-1]):
-        left, right = left-1, right+1
+        left, right = left - 1, right + 1
         if r in (left, col, right):
             raise BailOut
 
 def add_queen(queens):
+    time.sleep(0.01)
     for i in range(BOARD_SIZE):
         test_queens = queens + [i]
         try:
@@ -32,4 +34,4 @@ def add_queen(queens):
 
 queens = add_queen([])
 print queens
-print "\n".join(". "*q + "Q " + ". "*(BOARD_SIZE-q-1) for q in queens)
+print "\n".join(". "*q + "Q " + ". "*(BOARD_SIZE - q - 1) for q in queens)
