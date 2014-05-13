@@ -13,7 +13,7 @@ setup(
     keywords='profile',
     packages=["context"],
     namespace_packages=["context"],
-    test_suite = "context.tests.api",
+    test_suite="context.tests.api",
     zip_safe=True,
     install_requires=[
         "decorator",

@@ -129,6 +129,7 @@ def _profile(frame, action, params):
             "ENDOK"
         )
 
+
 def set_profile(active=False):
     if active:
         log_start("Profiling init", bookmark=True)
@@ -136,3 +137,42 @@ def set_profile(active=False):
     else:
         sys.setprofile(None)
         log_endok("Profiling exit")
+
+
+#######################################################################
+# Lock Debugging
+#######################################################################
+
+class LockWrapper(object):
+    """
+    A class which adds lock block / acquire / release events to the
+    event stream.
+
+    Regular code:
+
+       foo = threading.Lock()
+       foo.acquire()
+       foo.release()
+
+    Annotated code:
+
+       foo = ctx.LockWrapper(threading.Lock())
+       foo.acquire()
+       foo.release()
+    """
+    def __init__(self, lock, name):
+        self.lock = lock
+        self.lock_id = id(lock)
+        self.name = name
+
+    def acquire(self, blocking=1):
+        if blocking:
+            log_msg(self.lock_id, self.name, "LOCKB")
+        ret = self.lock.acquire(blocking)
+        if ret:
+            log_msg(self.lock_id, self.name, "LOCKA")
+        return ret
+
+    def release(self):
+        log_msg(self.lock_id, self.name, "LOCKR")
+        return self.lock.release()
