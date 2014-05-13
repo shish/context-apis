@@ -1,5 +1,8 @@
 import unittest
+import threading
 from StringIO import StringIO
+import sys
+sys.path.append("../../")
 
 import context.api as c
 
@@ -20,6 +23,7 @@ class TestAPI(unittest.TestCase):
         c.set_log("file:///tmp/test.ctxt")  # absolute
         self.assertRaises(NotImplementedError, c.set_log, "tcp://localhost:123")
         self.assertRaises(NotImplementedError, c.set_log, "udp://localhost:123")
+        c.set_log(None)  # turn off logging
 
     def test_log_msg(self):
         c.log_msg("func", "message", "WAFFLE")
@@ -55,3 +59,13 @@ class TestAPI(unittest.TestCase):
             funcy2()
         finally:
             c.set_profile(False)
+
+    def test_lock(self):
+        lock = c.LockWrapper(threading.Lock(), "My Lock")
+
+        self.assertTrue(lock.acquire(False))
+        lock.release()
+
+        self.assertTrue(lock.acquire(True))    # blocking
+        self.assertFalse(lock.acquire(False))  # non-blocking, return fail immediately
+        lock.release()
