@@ -139,6 +139,43 @@ def set_profile(active=False):
         log_endok("Profiling exit")
 
 
+_profile_decorator_level = 0
+
+def profile():
+    """Decorator to enable profiling for a function
+
+    Can be used recursively:
+
+        @ctx.profile()
+        def a():
+            b()
+
+        @ctx.profile()
+        def b():
+            print "moo"
+
+        a()
+
+    will turn on profiling from the start of a() to the end of a()
+    """
+    @decorator
+    def _profile(function, *args, **kwargs):
+        global _profile_decorator_level
+        try:
+            if _profile_decorator_level == 0:
+                set_profile(True)
+            _profile_decorator_level += 1
+
+            d = function(*args, **kwargs)
+        finally:
+            _profile_decorator_level -= 1
+            if _profile_decorator_level == 0:
+                set_profile(False)
+
+        return d
+    return _profile
+
+
 #######################################################################
 # Lock Debugging
 #######################################################################

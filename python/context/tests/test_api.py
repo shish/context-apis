@@ -60,6 +60,12 @@ class TestAPI(unittest.TestCase):
         finally:
             c.set_profile(False)
 
+    def test_profile(self):
+        @c.profile()
+        def funcy():
+            pass
+        funcy()
+
     def test_lock(self):
         lock = c.LockWrapper(threading.Lock(), "My Lock")
 
