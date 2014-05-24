@@ -1,7 +1,7 @@
 package main
 
 import (
-	ctx "./context"
+	ctx "github.com/shish/context-apis/go/context"
 	"time"
 )
 
