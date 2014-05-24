@@ -2,20 +2,20 @@ package context
 
 import (
 	"fmt"
-	"time"
-	"os"
 	"io"
 	"net/url"
+	"os"
+	"time"
 
 	// for GoRoutineID()
-	"runtime"
 	"bytes"
+	"runtime"
 	"strconv"
 )
 
-
 // based on something in camlistore
 var goroutineSpace = []byte("goroutine ")
+
 func GoRoutineID() int64 {
 	b := make([]byte, 31)
 	runtime.Stack(b, false)
@@ -33,21 +33,23 @@ func GoRoutineID() int64 {
 	return int64(n)
 }
 
-
 //######################################################################
 // Library API
 //######################################################################
 
 var output io.Writer
 
-
 // Set where to log to
 func SetLogFile(logUrl string) {
 	p, err := url.Parse(logUrl)
-	if err != nil {panic(err)}
+	if err != nil {
+		panic(err)
+	}
 	if p.Scheme == "file" {
 		fp, err := os.Create(p.Host + p.Path)
-		if err != nil {panic(err)}
+		if err != nil {
+			panic(err)
+		}
 		SetLogStream(fp)
 	} else {
 		panic("Go API currently only supports file:// logs")
@@ -58,18 +60,16 @@ func SetLogStream(out io.Writer) {
 	output = out
 }
 
-
 // Log a bit of text with a given type
 func LogMsg(function, text, msgType string) {
-    if output != nil {
+	if output != nil {
 		hostname, _ := os.Hostname()
-        fmt.Fprintf(output, "%f %s %d %d %s %s %s\n",
-            float64(time.Now().UnixNano()) / 1000000000,
-            hostname, os.Getpid(), GoRoutineID(),
-            msgType, function, text)
+		fmt.Fprintf(output, "%f %s %d %d %s %s %s\n",
+			float64(time.Now().UnixNano())/1000000000,
+			hostname, os.Getpid(), GoRoutineID(),
+			msgType, function, text)
 	}
 }
-
 
 // Decorator to log event-start at the start of a function
 // call and event-end at the end, optionally with a bookmark
@@ -101,46 +101,40 @@ func Log(text string, bookmark, exceptions, clear bool) {
 }
 */
 
-
 //######################################################################
 // Library Convenience
 //######################################################################
 
 // Shortcut to log some text with the bookmark type
 func LogBmark(text string) {
-    LogMsg("-", text, "BMARK")
+	LogMsg("-", text, "BMARK")
 }
-
 
 // Shortcut to log some text with the event-start type
 func LogStart(text string, bookmark, clear bool) {
-    if clear {
-        LogMsg("-", text, "CLEAR")
+	if clear {
+		LogMsg("-", text, "CLEAR")
 	}
-    if bookmark {
-        LogMsg("-", text, "BMARK")
+	if bookmark {
+		LogMsg("-", text, "BMARK")
 	}
-    LogMsg("-", text, "START")
+	LogMsg("-", text, "START")
 }
-
 
 // Shortcut to log some text with the event-end (success) type
 func LogEndok(text string) {
-    LogMsg("-", text, "ENDOK")
+	LogMsg("-", text, "ENDOK")
 }
-
 
 // Shortcut to log some text with the event-end (error) type
 func LogEnder(text string) {
-    LogMsg("-", text, "ENDER")
+	LogMsg("-", text, "ENDER")
 }
-
 
 // Shortcut to log some text with the event-clear type
 func LogClear(text string) {
-    LogMsg("-", text, "CLEAR")
+	LogMsg("-", text, "CLEAR")
 }
-
 
 //######################################################################
 // Automatic Profiling Mode
