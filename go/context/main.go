@@ -64,7 +64,7 @@ func LogMsg(function, text, msgType string) {
     if output != nil {
 		hostname, _ := os.Hostname()
         fmt.Fprintf(output, "%f %s %d %d %s %s %s\n",
-            float64(time.Now().UnixNano()) / 1000000,
+            float64(time.Now().UnixNano()) / 1000000000,
             hostname, os.Getpid(), GoRoutineID(),
             msgType, function, text)
 	}
