@@ -182,7 +182,7 @@ def profile():
 
 class LockWrapper(object):
     """
-    A class which adds lock block / acquire / release events to the
+    A class which adds lock wait / acquire / release events to the
     event stream.
 
     Regular code:
@@ -204,7 +204,7 @@ class LockWrapper(object):
 
     def acquire(self, blocking=1):
         if blocking:
-            log_msg(self.lock_id, self.name, "LOCKB")
+            log_msg(self.lock_id, self.name, "LOCKW")
         ret = self.lock.acquire(blocking)
         if ret:
             log_msg(self.lock_id, self.name, "LOCKA")
