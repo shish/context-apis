@@ -11,6 +11,9 @@ import (
 	"bytes"
 	"runtime"
 	"strconv"
+
+	// for LockWrapper
+	"sync"
 )
 
 // based on something in camlistore
@@ -207,37 +210,34 @@ def profile():
 //######################################################################
 
 /*
-class LockWrapper(object):
-    """
-    A class which adds lock block / acquire / release events to the
-    event stream.
+A class which adds lock block / acquire / release events to the
+event stream.
 
-    Regular code:
+Regular code:
 
-       foo = threading.Lock()
-       foo.acquire()
-       foo.release()
+   foo = sync.Lock()
+   foo.Lock()
+   foo.Unlock()
 
-    Annotated code:
+Annotated code:
 
-       foo = ctx.LockWrapper(threading.Lock())
-       foo.acquire()
-       foo.release()
-    """
-    def __init__(self, lock, name):
-        self.lock = lock
-        self.lock_id = id(lock)
-        self.name = name
-
-    def acquire(self, blocking=1):
-        if blocking:
-            Logmsg(self.lock_id, self.name, "LOCKB")
-        ret = self.lock.acquire(blocking)
-        if ret:
-            Logmsg(self.lock_id, self.name, "LOCKA")
-        return ret
-
-    def release(self):
-        Logmsg(self.lock_id, self.name, "LOCKR")
-        return self.lock.release()
+   foo = ctx.LockWrapper{sync.Lock(), "<uuid>", "My Lock"}
+   foo.Lock()
+   foo.Unlock()
 */
+type LockWrapper struct {
+	Wrapped sync.Locker
+	LockID string
+	Name string
+}
+
+func (self *LockWrapper) Lock() {
+	LogMsg(self.LockID, self.Name, "LOCKW")
+	self.Wrapped.Lock()
+	LogMsg(self.LockID, self.Name, "LOCKA")
+}
+
+func (self *LockWrapper) Unlock() {
+	LogMsg(self.LockID, self.Name, "LOCKR")
+	self.Wrapped.Unlock()
+}
