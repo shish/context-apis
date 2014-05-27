@@ -1,4 +1,4 @@
-from __future__ import print_function
+from __future__ import print_function, absolute_import
 from decorator import decorator
 from urlparse import urlparse
 import time
@@ -201,15 +201,25 @@ class LockWrapper(object):
         self.lock = lock
         self.lock_id = id(lock)
         self.name = name
+        self.counter = 0
+
+    def __enter__(self):
+        self.acquire()
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.release()
 
     def acquire(self, blocking=1):
-        if blocking:
+        if blocking and self.counter == 0:
             log_msg(self.lock_id, self.name, "LOCKW")
         ret = self.lock.acquire(blocking)
-        if ret:
+        if ret and self.counter == 0:
             log_msg(self.lock_id, self.name, "LOCKA")
+        self.counter += 1
         return ret
 
     def release(self):
-        log_msg(self.lock_id, self.name, "LOCKR")
+        self.counter -= 1
+        if self.counter == 0:
+            log_msg(self.lock_id, self.name, "LOCKR")
         return self.lock.release()
