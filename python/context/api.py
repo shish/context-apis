@@ -201,7 +201,7 @@ class LockWrapper(object):
         self.lock = lock
         self.lock_id = id(lock)
         self.name = name
-        self.counter = 0
+        self.counters = threading.local()
 
     def __enter__(self):
         self.acquire()
@@ -210,16 +210,18 @@ class LockWrapper(object):
         self.release()
 
     def acquire(self, blocking=1):
-        if blocking and self.counter == 0:
+        if not hasattr(self.counters, "counter"):
+            self.counters.counter = 0
+        if blocking and self.counters.counter == 0:
             log_msg(self.lock_id, self.name, "LOCKW")
         ret = self.lock.acquire(blocking)
-        if ret and self.counter == 0:
+        if ret and self.counters.counter == 0:
             log_msg(self.lock_id, self.name, "LOCKA")
-        self.counter += 1
+        self.counters.counter += 1
         return ret
 
     def release(self):
-        self.counter -= 1
-        if self.counter == 0:
+        self.counters.counter -= 1
+        if self.counters.counter == 0:
             log_msg(self.lock_id, self.name, "LOCKR")
         return self.lock.release()
