@@ -11,4 +11,8 @@ output.java-profile.ctxt: ExampleProfile.class libcontext.so
 	javac $<
 
 libcontext.so: java-profiler.c
-	gcc -fPIC -I /usr/lib/jvm/java-6-openjdk/include/ -shared -Wl,-soname,libcontext.so.1 -o libcontext.so java-profiler.c
+	gcc -fPIC \
+		-I `/usr/libexec/java_home`/include/ \
+		-I `/usr/libexec/java_home`/include/darwin/ \
+		-shared -o libcontext.so java-profiler.c
+		# -shared -Wl,-soname,libcontext.so.1 -o libcontext.so java-profiler.c
