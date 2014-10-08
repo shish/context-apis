@@ -13,6 +13,7 @@ output.java-profile.ctxt: ExampleProfile.class libcontext.so
 libcontext.so: java-profiler.c
 	gcc -fPIC \
 		-I /usr/lib/jvm/java-openjdk/include/ \
+		-I /usr/lib/jvm/default-java/include/ \
 		-I `/usr/libexec/java_home`/include/ \
 		-I `/usr/libexec/java_home`/include/darwin/ \
 		-shared -o libcontext.so java-profiler.c

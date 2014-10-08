@@ -90,7 +90,7 @@ void ctx_log_prof(jvmtiEnv *env, jthread thread, jmethodID method, char *type) {
 
         fprintf(
 			_context_log,
-			"%ld.%d %s %d %s %s %s %s\n",
+			"%ld.%03d %s %d %s %s %s %s\n",
             tmb.time, tmb.millitm,
             hostname,
 			getpid(),
