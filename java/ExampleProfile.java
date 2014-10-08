@@ -1,4 +1,6 @@
 
+class BailOut extends Exception {}
+
 class ExampleProfile {
 	private static final int BOARD_SIZE = 8;
 

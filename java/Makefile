@@ -10,6 +10,9 @@ output.java-profile.ctxt: ExampleProfile.class libcontext.so
 %.class: %.java
 	javac $<
 
+clean:
+	rm -f *.class *.dll *.so *.ctxt *.cbin
+
 libcontext.so: java-profiler.c
 	gcc -fPIC \
 		-I /usr/lib/jvm/java-openjdk/include/ \
