@@ -5,6 +5,9 @@ class ExampleProfile {
 	private static final int BOARD_SIZE = 8;
 
 	private static void validate(int[] queens) throws BailOut {
+		try {Thread.sleep(10);}
+		catch(Exception e) {}
+
 		int left, right, col;
 		left = right = col = queens[queens.length-1];
 	    for(int n = queens.length-2; n>=0; n--) {
@@ -18,9 +21,6 @@ class ExampleProfile {
 	}
 
 	private static int[] add_queen(int[] queens) throws BailOut {
-		try {Thread.sleep(10);}
-		catch(Exception e) {}
-
 		for(int i=0; i<BOARD_SIZE; i++) {
 			int[] test_queens = new int[queens.length + 1];
 			for(int n=0; n<queens.length; n++) {

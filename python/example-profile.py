@@ -12,6 +12,8 @@ class BailOut(Exception):
     pass
 
 def validate(queens):
+    time.sleep(0.01)
+
     left = right = col = queens[-1]
     for r in reversed(queens[:-1]):
         left, right = left - 1, right + 1
@@ -19,7 +21,6 @@ def validate(queens):
             raise BailOut
 
 def add_queen(queens):
-    time.sleep(0.01)
     for i in range(BOARD_SIZE):
         test_queens = queens + [i]
         try:
