@@ -5,7 +5,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.rst')).read()
 
 setup(
-    name='context.api',
+    name='context',
     version='0.0',
     description='A Python API for the Context profiler',
     long_description=README,
@@ -18,7 +18,7 @@ setup(
     keywords='profile',
     packages=["context"],
     namespace_packages=["context"],
-    test_suite="context.tests.api",
+    test_suite="context.tests",
     zip_safe=True,
     install_requires=[
         "decorator",
